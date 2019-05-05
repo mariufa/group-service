@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class GroupController {
@@ -33,5 +34,13 @@ public class GroupController {
     @GetMapping("/searchbykey")
     public  List<Group> getByGroupKey(@RequestParam String groupKey) {
         return groupRepository.findByGroupKey(groupKey);
+    }
+
+    @DeleteMapping("/groups/{id}")
+    public void deleteGroup(@PathVariable Long  id) {
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isPresent()) {
+            groupRepository.deleteById(id);
+        }
     }
 }
