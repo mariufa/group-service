@@ -24,5 +24,8 @@ public class GroupController {
         return groupRepository.save(group);
     }
 
-
+    @GetMapping("/searchbykey")
+    public  List<Group> getByGroupKey(@RequestParam String groupKey) {
+        return groupRepository.findByGroupKey(groupKey);
+    }
 }
