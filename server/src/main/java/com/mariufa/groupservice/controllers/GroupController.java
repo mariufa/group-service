@@ -3,6 +3,7 @@ package com.mariufa.groupservice.controllers;
 import com.mariufa.groupservice.models.Group;
 import com.mariufa.groupservice.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,8 +21,13 @@ public class GroupController {
     }
 
     @PostMapping("/groups")
-    public Group createGroup(@Valid @RequestBody Group group) {
-        return groupRepository.save(group);
+    public ResponseEntity<Object> createGroup(@Valid @RequestBody Group group) {
+        if (groupRepository.findByGroupKey(group.getGroupKey()).size() > 0) {
+            return ResponseEntity.status(409).build();
+        } else {
+            groupRepository.save(group);
+            return ResponseEntity.ok().build();
+        }
     }
 
     @GetMapping("/searchbykey")
