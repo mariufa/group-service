@@ -1,20 +1,38 @@
 package com.mariufa.groupservice.models;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "Groups")
 public class Group {
 
-    private final long id;
-    private final String groupKey;
+    @Id
+    @GeneratedValue(generator = "group_generator")
+    @SequenceGenerator(
+            name = "group_generator",
+            sequenceName = "group_sequence",
+            initialValue = 1000
+    )
+    private Long id;
 
-    public Group(long id, String groupKey) {
-        this.id = id;
-        this.groupKey = groupKey;
-    }
+    @NotBlank
+    @Column(columnDefinition = "text")
+    private String groupKey;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     public String getGroupKey() {
         return groupKey;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setGroupKey(String groupKey) {
+        this.groupKey = groupKey;
     }
 }

@@ -1,18 +1,28 @@
 package com.mariufa.groupservice.controllers;
 
 import com.mariufa.groupservice.models.Group;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.mariufa.groupservice.repository.GroupRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.atomic.AtomicLong;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class GroupController {
 
-    private final AtomicLong counter = new AtomicLong();
+    @Autowired
+    private GroupRepository groupRepository;
 
-    @RequestMapping("/test")
-    public Group outputAGroup() {
-        return new Group(counter.incrementAndGet(), "test");
+    @GetMapping("/groups")
+    public List<Group> getGroups() {
+        return groupRepository.findAll();
     }
+
+    @PostMapping("/groups")
+    public Group createGroup(@Valid @RequestBody Group group) {
+        return groupRepository.save(group);
+    }
+
+
 }
